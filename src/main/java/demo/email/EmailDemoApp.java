@@ -24,10 +24,13 @@ import static act.controller.Controller.Util.redirect;
 
 import act.Act;
 import act.app.ActionContext;
+import act.event.EventBus;
 import act.util.LogSupport;
 import org.osgl.mvc.annotation.GetAction;
 import org.osgl.mvc.annotation.PostAction;
+import org.osgl.util.C;
 
+import java.util.List;
 import javax.inject.Inject;
 
 public class EmailDemoApp extends LogSupport {
@@ -40,12 +43,13 @@ public class EmailDemoApp extends LogSupport {
     }
 
     @PostAction("/welcome")
-    public void welcome(String who, ActionContext context) {
+    public void welcome(String who, ActionContext context, EventBus eventBus) {
         info(">> welcome action handler");
         if (!PostOffice.isValidEmail(who)) {
             context.flash().error("Please type in valid email");
         } else {
-            postOffice.sendWelcome(who);
+            eventBus.trigger("welcome", who);
+            //postOffice.sendWelcome(who);
             context.flash().success("welcome email sent");
         }
         info("<< welcome action handler");

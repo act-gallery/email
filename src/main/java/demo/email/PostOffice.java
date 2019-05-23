@@ -21,6 +21,7 @@ package demo.email;
  */
 
 import act.conf.AppConfig;
+import act.event.On;
 import act.job.Every;
 import act.mail.Mailer;
 import org.osgl.logging.LogManager;
@@ -28,6 +29,7 @@ import org.osgl.logging.Logger;
 import org.osgl.util.E;
 import org.osgl.util.S;
 
+import java.util.List;
 import javax.inject.Inject;
 
 /**
@@ -49,6 +51,7 @@ public class PostOffice extends Mailer.Util {
      * to render the mail content
      * @param who the recipient
      */
+    @On("welcome")
     public void sendWelcome(String who) {
         mailer().to(emailOf(who)).subject("Welcome");
         send(who);
